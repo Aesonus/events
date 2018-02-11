@@ -1,0 +1,15 @@
+{
+    "name": "aesonus/session-storage",
+    "autoload": {
+        "psr-4": {
+            "Aesonus\\Events\\": "src",
+            "Aesonus\\Events\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "require": {
+        
+    }
+}

@@ -8,22 +8,24 @@
 namespace Aesonus\Events\Contracts;
 
 /**
- *
+ * Should call the dispatch method on all registered events
  * @author Aesonus <corylcomposinger at gmail.com>
  */
 interface DispatcherInterface
 {
     /**
-     * Attaches a handler to a specific event
-     * @param \Aesonus\Events\Contracts\HandlerInterface $handler Handler for the event
-     * @param string $event class constant of the desired event
-     * @param int $priority Handler that should be fired first higher = more priority
+     * Should call dispatch on registered event objects
+     * @param string $event class constant of EventInterface to fire
+     * @return bool Should return if the event was fired
      */
-    public function attachHandler(HandlerInterface $handler, $event, $priority = 10);
+    public function dispatch($event);
     
     /**
-     * Fires an event
-     * @param \Aesonus\Events\Contracts\EventInterface $event
+     * Adds events to registered events
+     * @param EventInterface|array $events Must be array of EventInterfaces
+     * or instance of EventInterface
+     * @throws \InvalidArgumentException Should throw on invalid $events.
+     * @return $this Must be able to chain
      */
-    public function event(EventInterface $event);
+    public function register($events);
 }

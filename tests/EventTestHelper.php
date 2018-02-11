@@ -5,13 +5,19 @@
  * and open the template in the editor.
  */
 
-namespace Aesonus\Events\Contracts;
+namespace Aesonus\Events\Tests;
 
 /**
+ * Description of EventTestHelper
  *
  * @author Aesonus <corylcomposinger at gmail.com>
  */
-interface HandlerInterface
+class EventTestHelper extends \Aesonus\Events\Event
 {
-    public function handle(EventInterface $event);
+    public function __get($name)
+    {
+        if ($name == 'listeners') {
+            return $this->listeners;
+        }
+    }
 }
