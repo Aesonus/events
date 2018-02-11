@@ -1,5 +1,5 @@
 {
-    "name": "aesonus/session-storage",
+    "name": "aesonus/events",
     "autoload": {
         "psr-4": {
             "Aesonus\\Events\\": "src",
