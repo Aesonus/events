@@ -80,5 +80,6 @@ class DispatcherTest extends \PHPUnit\Framework\TestCase
 
         $this->dispatcher->register($events)->dispatch($sdfkgjsdfkjgsdkghw);
         $this->assertFalse($this->dispatcher->dispatch("NotFoundEvent"));
+        $this->assertFalse((new \Aesonus\Events\Dispatcher())->dispatch("no go"));
     }
 }
