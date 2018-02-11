@@ -1,2 +1,2 @@
-# session-storage
-Allows for abstract access of session superglobal
+# Events
+A simple Event, Listener,and Dispatcher
