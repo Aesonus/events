@@ -39,4 +39,7 @@ Dispatch events with class name
 $dispatcher->dispatch(MyEvent::class);
 ```
 
+Event calls handle on each attached listener in a queue
+
+
 [More to come]
