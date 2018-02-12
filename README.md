@@ -13,9 +13,9 @@ $dispatcher = new Dispatcher();
 
 Extend the base event class and listener class for each of your events and listeners
 ```php
-class MyEvent extends Event
+class MyEvent extends Event { }
 
-class MyListener extends Listener
+class MyListener extends Listener { }
 ```
 
 Override the handle method in listener to do a specific task
