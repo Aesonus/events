@@ -1,10 +1,10 @@
 # Events
 A simple Event, Listener,and Dispatcher
 
-#Tests
+## Tests
 phpunit
 
-#How to use
+## How to use
 
 Create a dispatcher
 ```php
