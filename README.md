@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Aesonus/events.svg?branch=master)](https://travis-ci.org/Aesonus/events)
+
 # Events
 A simple Event, Listener,and Dispatcher
 
