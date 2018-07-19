@@ -8,18 +8,22 @@
  * file that was distributed with this source code
  */
 
-namespace Aesonus\Events;
+namespace Aesonus\Events\Exceptions;
 
 /**
- * Description of Listener
+ * Description of ResumableException
  *
  * @author Aesonus <corylcomposinger at gmail.com>
  */
-class Listener implements Contracts\ListenerInterface
+class ResumableException extends \RuntimeException
 {
-
+    protected $listenerQueue;
     
-    public function handle(Contracts\EventInterface $event): void
+    /**
+     * Gets or sets the remaining listeners in the queue
+     * @param array|null $listenerQueue
+     */
+    public function listeners(array $listenerQueue = null)
     {
         
     }

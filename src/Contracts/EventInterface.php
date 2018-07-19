@@ -17,19 +17,21 @@ interface EventInterface
 {
     /**
      * Adds listeners to the event queue
-     * @param ListenerInterface|array $listeners Must be array of ListenerInter-
-     * faces
+     * @param ListenerInterface|array $listeners Must be array of ListenerInterfaces
      * or instance of ListenerInterface
+     * @param int $priority The priority of the listener. The higher, the more important.
+     * MUST set the priority if not given
      * @throws \InvalidArgumentException Should throw on invalid $listener.
-     * @return $this Must be able to chain
+     * @return $this Must be fluent
      */
-    public function attach($listeners);
+    public function attach($listeners, int $priority = 0): EventInterface;
     
     /**
-     * Calls the handle method on all attached ListenerInterfaces
-     * @throws NoListenersException Should throw if no listeners added
+     * MUST call the handle method on all attached ListenerInterfaces. MUST allow 
+     * the listener queue to be resumed if it was previously interrupted by an exception.
+     * @throws NoListenersException MUST throw if no listeners added
      * @return EventInterface Returns the event that was passed through all 
-     * listeners registered
+     * listeners registered.
      */
-    public function dispatch();
+    public function dispatch(): EventInterface;
 }

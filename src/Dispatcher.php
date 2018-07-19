@@ -30,7 +30,7 @@ class Dispatcher implements Contracts\DispatcherInterface
      * @param string $event class constant of EventInterface to fire
      * @return boolean 
      */
-    public function dispatch($event)
+    public function dispatch($event): bool
     {
         if (array_key_exists($event, $this->events)) {
             $this->events[$event]->dispatch();
@@ -40,7 +40,7 @@ class Dispatcher implements Contracts\DispatcherInterface
         }
     }
 
-    public function register($events)
+    public function register($events): Contracts\DispatcherInterface
     {
         if ($events instanceof EventInterface) {
             $this->registerEvent($events);

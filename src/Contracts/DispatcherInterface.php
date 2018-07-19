@@ -18,14 +18,14 @@ interface DispatcherInterface
      * @param string $event class constant of EventInterface to fire
      * @return bool Should return if the event was fired
      */
-    public function dispatch($event);
+    public function dispatch($event): bool;
     
     /**
      * Adds events to registered events
      * @param EventInterface|array $events Must be array of EventInterfaces
      * or instance of EventInterface
      * @throws \InvalidArgumentException Should throw on invalid $events.
-     * @return $this Must be able to chain
+     * @return $this MUST be fluent
      */
-    public function register($events);
+    public function register($events): DispatcherInterface;
 }
