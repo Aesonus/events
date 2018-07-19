@@ -10,6 +10,7 @@
         "aesonus/test-lib": "^2.0"
     },
     "require": {
-        "aesonus/paladin": "^2"
+        "aesonus/paladin": "^2",
+        "php": ">=7.1"
     }
 }
