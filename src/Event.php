@@ -93,6 +93,10 @@ class Event implements Contracts\EventInterface
         return $this;
     }
 
+    /**
+     * Resets the listener queue to the state it was in before the last dispatch call
+     * @return $this
+     */
     public function reset(): Contracts\EventInterface
     {
         $this->listenerQueue = $this->listenerQueueBeforeDispatch;
