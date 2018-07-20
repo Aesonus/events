@@ -406,4 +406,12 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
         }
         $this->testObj->dispatch();
     }
+    
+    /**
+     * @test
+     */
+    public function resetMethodIsFluent()
+    {
+        $this->assertSame($this->testObj, $this->testObj->reset());
+    }
 }
