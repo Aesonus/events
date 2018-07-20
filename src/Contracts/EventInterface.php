@@ -34,4 +34,11 @@ interface EventInterface
      * listeners registered.
      */
     public function dispatch(): EventInterface;
+    
+    /**
+     * MUST revert the listener queue to the state it was in directly before
+     * the last call of dispatch()
+     * @return EventInterface
+     */
+    public function reset(): EventInterface;
 }

@@ -27,10 +27,16 @@ class Event implements Contracts\EventInterface
     const PRIORITY = 1;
 
     /**
-     * All the registered listeners for this event
+     * All the remaining listeners for this event
      * @var array 
      */
     protected $listenerQueue;
+    
+    /**
+     * All the registered listeners for this event
+     * @var array 
+     */
+    protected $listenerQueueBeforeDispatch;
 
     /**
      * 
@@ -79,10 +85,17 @@ class Event implements Contracts\EventInterface
         if (!is_array($this->listenerQueue)) {
             throw new NoListenersException();
         }
+        $this->listenerQueueBeforeDispatch = $this->listenerQueue;
         
         while ($listener = array_shift($this->listenerQueue)) {
             $listener[static::LISTENER]->handle($this);
         }
+        return $this;
+    }
+
+    public function reset(): Contracts\EventInterface
+    {
+        $this->listenerQueue = $this->listenerQueueBeforeDispatch;
         return $this;
     }
 }

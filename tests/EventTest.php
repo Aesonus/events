@@ -376,4 +376,34 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
         $this->testObj->attach($listeners);
         $this->assertSame($this->testObj, $this->testObj->dispatch());
     }
+    
+    /**
+     * @test
+     */
+    public function resetMethodRevertsListenerQueueToStateBeforeLastDispatch()
+    {
+        $listeners = $this->getThreeMockListeners();
+
+        $listeners[0]->expects($this->exactly(2))->method('handle');
+        $listeners[1]->expects($this->exactly(2))->method('handle')
+            ->willThrowException(new ResumableException());
+        $listeners[2]->expects($this->once())->method('handle');
+        
+        $this->testObj->attach($listeners);
+        //Disrupted dispatch
+        try {
+            $this->testObj->dispatch();
+        } catch (ResumableException $e) {
+            
+        }
+        
+        $this->testObj->reset();
+        
+        try {
+            $this->testObj->dispatch();
+        } catch (ResumableException $e) {
+            
+        }
+        $this->testObj->dispatch();
+    }
 }
