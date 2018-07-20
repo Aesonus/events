@@ -17,14 +17,5 @@ namespace Aesonus\Events\Exceptions;
  */
 class ResumableException extends \RuntimeException
 {
-    protected $listenerQueue;
-    
-    /**
-     * Gets or sets the remaining listeners in the queue
-     * @param array|null $listenerQueue
-     */
-    public function listeners(array $listenerQueue = null)
-    {
-        
-    }
+
 }

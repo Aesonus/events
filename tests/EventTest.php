@@ -13,6 +13,7 @@ namespace Aesonus\Events\Tests;
 use Aesonus\Events\Event;
 use Aesonus\Events\Listener;
 use Aesonus\Events\Exceptions\ResumableException;
+use Aesonus\Events\Exceptions\NoListenersException;
 
 /**
  * Description of EventTest
@@ -101,14 +102,25 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
     {
         $listener = $this->getThreeMockListeners();
         return [
-            '3 listeners with listener 1 using default priority' => [[
-                [$listener[0], 3],
-                [$listener[2], 13],
-                $listener[1],
-                ], 0, [
-                    [$listener[1], 0],
+            '3 listeners with listener 1 using default priority' => [
+                [
                     [$listener[0], 3],
                     [$listener[2], 13],
+                    $listener[1],
+                ], 0, [
+                    [$listener[2], 13],
+                    [$listener[0], 3],
+                    [$listener[1], 0],
+                ]],
+            '3 listeners with listener 2 using default priority' => [
+                [
+                    $listener[2],
+                    $listener[1],
+                    [$listener[0], 3],
+                ], 0, [
+                    [$listener[0], 3],
+                    [$listener[2], 0],
+                    [$listener[1], 0],
                 ]],
         ];
     }
@@ -140,9 +152,9 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
                     [$listener[0], 3],
                     [$listener[2], 13],
                 ], [
-                    [$listener[1], 0],
-                    [$listener[0], 3],
                     [$listener[2], 13],
+                    [$listener[0], 3],
+                    [$listener[1], 0],
                 ]
             ],
         ];
@@ -241,8 +253,8 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
                 [$listeners[0], new \stdClass()], //No one wants an std
                 [$listeners[1], 3],
                 ], 0, [
-                    [$listeners[0], 0],
                     [$listeners[1], 3],
+                    [$listeners[0], 0],
                 ]],
         ];
     }
@@ -307,11 +319,51 @@ class EventTest extends \Aesonus\TestLib\BaseTestCase
         $listeners[1]->expects($this->once())->method('handle')
             ->willThrowException(new ResumableException());
         $this->testObj->attach($listeners);
+        //Disrupted dispatch
         try {
             $this->testObj->dispatch();
         } catch (ResumableException $e) {
             
         }
+        //Resume disrupted dispatch
+        $this->testObj->dispatch();
+    }
+    
+    /**
+     * @test
+     */
+    public function dispatchMethodCallsListenerHandlersInOrder()
+    {
+        $listeners = $this->getThreeMockListeners();
+        $events_fired = [];
+        
+        $listeners[0]->expects($this->once())->method('handle')
+            ->willReturnCallback(function() use (&$events_fired, $listeners) {
+                $events_fired[] = $listeners[0];
+            });
+        $listeners[1]->expects($this->once())->method('handle')
+            ->willReturnCallback(function() use (&$events_fired, $listeners) {
+                $events_fired[] = $listeners[1];
+            });
+        $listeners[2]->expects($this->once())->method('handle')
+            ->willReturnCallback(function() use (&$events_fired, $listeners) {
+                $events_fired[] = $listeners[2];
+            });
+        //Will be called 0,1,2
+        
+        $this->testObj->attach($listeners);
+        
+        $this->testObj->dispatch();
+        $this->assertEquals($listeners, $events_fired);
+        
+    }
+    
+    /**
+     * @test
+     */
+    public function dispatchMethodThrowsExceptionIfNoListenersAttached()
+    {
+        $this->expectException(NoListenersException::class);
         $this->testObj->dispatch();
     }
 

@@ -47,8 +47,8 @@ class Event implements Contracts\EventInterface
         foreach ($listeners as $i => $listener) {
             if ($listener instanceof ListenerInterface) {
                 $queue_items[] = [
-                    self::LISTENER => $listener,
-                    self::PRIORITY => $priority,
+                    static::LISTENER => $listener,
+                    static::PRIORITY => $priority,
                 ];
                 continue;
             } elseif (!is_array($listener)) {
@@ -63,16 +63,13 @@ class Event implements Contracts\EventInterface
         }
         $this->listenerQueue = array_merge((array) $this->listenerQueue, $queue_items);
         usort($this->listenerQueue, function ($a, $b) {
-            if ($a[static::PRIORITY] == $b[static::PRIORITY]) {
-                return 0;
-            }
-            return $a[static::PRIORITY] > $b[static::PRIORITY] ? 1 : -1;
+            return $b[static::PRIORITY] - $a[static::PRIORITY];
         });
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Dispatches this event to all listener left in the queue
      * @throws NoListenersException Throws if no listeners attached
      * @throws ResumableException 
      * @return $this 
@@ -84,7 +81,7 @@ class Event implements Contracts\EventInterface
         }
         
         while ($listener = array_shift($this->listenerQueue)) {
-            $listener[self::LISTENER]->handle($this);
+            $listener[static::LISTENER]->handle($this);
         }
         return $this;
     }
